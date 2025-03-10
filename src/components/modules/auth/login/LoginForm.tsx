@@ -16,6 +16,7 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { loginUser } from "@/services/AuthService";
 import { toast } from "sonner";
 import { LoginSchema } from "./LoginValidation";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const LoginForm = () => {
   const form = useForm({ resolver: zodResolver(LoginSchema) });
@@ -23,6 +24,10 @@ const LoginForm = () => {
   const {
     formState: { isSubmitting },
   } = form;
+
+  const handleRecaptcha = (value: string | null) => {
+    console.log(value);
+  };
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     console.log(data);
@@ -45,9 +50,7 @@ const LoginForm = () => {
         <Logo />
         <div className="mb-3">
           <h1 className="text-xl font-semibold">Login</h1>
-          <p className="font-extralight text-sm text-gray-600">
-            Welcome back!
-          </p>
+          <p className="font-extralight text-sm text-gray-600">Welcome back!</p>
         </div>
       </div>
       <Form {...form}>
@@ -78,7 +81,13 @@ const LoginForm = () => {
               </FormItem>
             )}
           />
-
+          <div className="w-full flex mt-5">
+            <ReCAPTCHA
+              sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_CLIENT_KEY as string}
+              onChange={handleRecaptcha}
+              className="mx-auto"
+            />
+          </div>
           <Button type="submit" className="mt-5 w-full">
             {isSubmitting ? "Logging...." : "Login"}
           </Button>

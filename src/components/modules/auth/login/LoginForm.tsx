@@ -18,8 +18,10 @@ import { toast } from "sonner";
 import { LoginSchema } from "./LoginValidation";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const LoginForm = () => {
+  const router = useRouter()
   const form = useForm({ resolver: zodResolver(LoginSchema) });
 
   const {
@@ -44,6 +46,7 @@ const LoginForm = () => {
     try {
       const res = await loginUser(data);
       if (res?.success) {
+        router.push('/')
         toast.success(res?.message);
       } else {
         toast.error(res?.message);

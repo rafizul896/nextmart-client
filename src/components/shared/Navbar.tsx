@@ -46,7 +46,7 @@ export default function Navbar() {
           </Button>
           {user ? (
             <>
-              <Link href={"/"}>
+              <Link href={"/create-shop"}>
                 <Button
                   className="rounded-full cursor-pointer"
                   variant={"outline"}

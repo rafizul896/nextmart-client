@@ -16,6 +16,8 @@ import Logo from "@/app/assets/svgs/Logo";
 import { useState } from "react";
 import NMImageUploader from "@/components/ui/core/NMImageUploader";
 import ImagePreviewer from "@/components/ui/core/NMImageUploader/ImagePreviwer";
+import { createShop } from "@/services/Shop";
+import { toast } from "sonner";
 
 export default function CreateShopForm() {
   const [imageFiles, setImageFiles] = useState<File[] | []>([]);
@@ -25,6 +27,7 @@ export default function CreateShopForm() {
 
   const {
     formState: { isSubmitting },
+    reset,
   } = form;
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
@@ -40,7 +43,20 @@ export default function CreateShopForm() {
     };
 
     try {
-      console.log(modifiedData);
+      const formData = new FormData();
+      formData.append("data", JSON.stringify(modifiedData));
+      formData.append("logo", imageFiles[0] as File);
+
+      const res = await createShop(formData);
+
+      console.log(res);
+
+      if (res.success) {
+        reset();
+        toast.success(res.message);
+      } else {
+        toast.error(res?.message);
+      }
     } catch (err: any) {
       console.error(err);
     }
@@ -232,7 +248,6 @@ export default function CreateShopForm() {
                 />
               </div>
             )}
-
           </div>
 
           <Button type="submit" className="mt-5 w-full">

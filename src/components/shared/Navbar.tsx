@@ -18,6 +18,8 @@ import { useUser } from "@/context/UserContext";
 export default function Navbar() {
   const { user, setIsLoading } = useUser();
 
+  console.log(user);
+
   const handleLogOut = async () => {
     Logout();
     setIsLoading(true);
@@ -46,14 +48,15 @@ export default function Navbar() {
           </Button>
           {user ? (
             <>
-              <Link href={"/create-shop"}>
-                <Button
-                  className="rounded-full cursor-pointer"
-                  variant={"outline"}
-                >
-                  Create Shop
-                </Button>
-              </Link>
+              {user?.hasShop === false && (
+                <Link href={"/create-shop"}>
+                  <Button
+                    className="rounded-full cursor-pointer"
+                  >
+                    Create Shop
+                  </Button>
+                </Link>
+              )}
 
               <DropdownMenu>
                 <DropdownMenuTrigger>

@@ -1,18 +1,20 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import { Input } from "../../input";
-import Image from "next/image";
+import { cn } from "@/lib/utils";
 
 interface INMImageUploaderProps {
-  imageFiles: File[] | [];
+  label?: string;
+  className?: string;
   setImageFiles: Dispatch<SetStateAction<[] | File[]>>;
+  setImagePreview: Dispatch<SetStateAction<[] | string[]>>;
 }
 
 const NMImageUploader = ({
-  imageFiles,
+  label,
+  className,
   setImageFiles,
+  setImagePreview,
 }: INMImageUploaderProps) => {
-  const [imagePreview, setImagePreview] = useState<string[] | []>([]);
-
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files![0];
     setImageFiles((prev) => [...prev, file]);
@@ -30,7 +32,7 @@ const NMImageUploader = ({
   };
 
   return (
-    <div>
+    <div className={cn("flex flex-col items-center w-full gap-4", className)}>
       <Input
         onChange={handleImageChange}
         type="file"
@@ -43,20 +45,8 @@ const NMImageUploader = ({
         htmlFor="image-upload"
         className="w-full h-36 md:size-36 flex items-center justify-center border-2 border-dashed border-gray-300 rounded-md cursor-pointer text-center text-sm text-gray-500 hover:bg-gray-50 transition"
       >
-        label
+        {label}
       </label>
-
-      <div>
-        {imagePreview.map((preView, index) => (
-          <Image
-            src={preView}
-            key={index}
-            alt="images"
-            width={500}
-            height={500}
-          />
-        ))}
-      </div>
     </div>
   );
 };

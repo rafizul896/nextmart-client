@@ -82,7 +82,7 @@ const ManageCategories = ({ categories }: TCategoriesProps) => {
       header: () => <div>Action</div>,
       cell: ({ row }) => (
         <button
-          className="text-red-500"
+          className="text-red-500 cursor-pointer"
           title="Delete"
           onClick={() => handleDelete(row.original)}
         >

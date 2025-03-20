@@ -34,10 +34,15 @@ const DeleteConfirmationModal: React.FC<DeleteModalProps> = ({
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)}>
+          <Button
+            className="cursor-pointer"
+            variant="outline"
+            onClick={() => onOpenChange(false)}
+          >
             Cancel
           </Button>
           <Button
+            className="cursor-pointer"
             variant="destructive"
             onClick={() => {
               onConfirm();

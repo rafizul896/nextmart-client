@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidateTag } from "next/cache";
 import { cookies } from "next/headers";
 
 export const createCategory = async (data: FormData) => {
@@ -12,6 +13,7 @@ export const createCategory = async (data: FormData) => {
       body: data,
     });
 
+    revalidateTag("Category");
     return res.json();
   } catch (err: any) {
     return Error(err);
@@ -24,6 +26,9 @@ export const getAllCategories = async () => {
       `${process.env.NEXT_PUBLIC_BASE_API}/category?page=1&limit=10`,
       {
         method: "GET",
+        next: {
+          tags: ["Category"],
+        },
       }
     );
 
@@ -44,7 +49,8 @@ export const deleteCategory = async (categoryId: string) => {
         },
       }
     );
-
+    
+    revalidateTag("Category");
     return res.json();
   } catch (err: any) {
     return Error(err);

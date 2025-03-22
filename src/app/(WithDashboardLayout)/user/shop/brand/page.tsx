@@ -1,4 +1,4 @@
-import ManageCategories from "@/components/modules/shop/category";
+import ManageBrands from "@/components/modules/shop/brand";
 import { getAllCategories } from "@/services/Category";
 
 const ProductCategoryPage = async () => {
@@ -6,7 +6,7 @@ const ProductCategoryPage = async () => {
 
   return (
     <div>
-      <ManageCategories categories={data} />
+      <ManageBrands categories={data} />
     </div>
   );
 };

@@ -45,6 +45,7 @@ const CreateBrandModal = () => {
         toast.error(res.message);
       }
     } catch (err: any) {
+      toast.error(err.message);
       console.error(err);
     }
   };

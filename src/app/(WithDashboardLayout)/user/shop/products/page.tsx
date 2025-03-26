@@ -1,11 +1,13 @@
-import React from 'react';
+import ManageProducts from "@/components/modules/shop/product";
+import { getAllProducts } from "@/services/Product";
 
-const ProductsPage = () => {
-    return (
-        <div>
-           ProductsPage 
-        </div>
-    );
+const ManageProductsPage = async () => {
+  const { data } = await getAllProducts();
+  return (
+    <div>
+      <ManageProducts products={data} />
+    </div>
+  );
 };
 
-export default ProductsPage;
+export default ManageProductsPage;

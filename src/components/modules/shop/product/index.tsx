@@ -7,16 +7,42 @@ import { Edit, Eye, Plus, Trash } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import { toast } from "sonner";
+import { deleteProduct } from "@/services/Product";
+import DeleteConfirmationModal from "@/components/ui/core/NMModal/DeleteConfirmationModal";
 
 const ManageProducts = ({ products }: { products: IProduct[] }) => {
   const router = useRouter();
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [selectedItem, setSelectedItem] = useState<string | null>(null);
 
   const handleView = (product: IProduct) => {
     console.log("Viewing product:", product);
   };
 
-  const handleDelete = (productId: string) => {
-    console.log("Deleting product with ID:", productId);
+  const handleDelete = (data: IProduct) => {
+    setSelectedId(data?._id);
+    setSelectedItem(data?.name);
+    setModalOpen(true);
+  };
+
+  const handleDeleteConfirm = async () => {
+    try {
+      if (selectedId) {
+        const res = await deleteProduct(selectedId);
+        console.log(res);
+        if (res.success) {
+          toast.success(res.message);
+          setModalOpen(false);
+        } else {
+          toast.error(res.message);
+        }
+      }
+    } catch (err: any) {
+      console.error(err?.message);
+    }
   };
 
   const columns: ColumnDef<IProduct>[] = [
@@ -93,7 +119,7 @@ const ManageProducts = ({ products }: { products: IProduct[] }) => {
           <button
             className="text-gray-500 hover:text-red-500"
             title="Delete"
-            onClick={() => handleDelete(row.original._id)}
+            onClick={() => handleDelete(row.original)}
           >
             <Trash className="w-5 h-5" />
           </button>
@@ -116,6 +142,13 @@ const ManageProducts = ({ products }: { products: IProduct[] }) => {
         </div>
       </div>
       <NMTable columns={columns} data={products || []} />
+
+      <DeleteConfirmationModal
+        name={selectedItem}
+        isOpen={isModalOpen}
+        onOpenChange={setModalOpen}
+        onConfirm={handleDeleteConfirm}
+      />
     </div>
   );
 };

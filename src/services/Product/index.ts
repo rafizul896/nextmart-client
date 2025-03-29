@@ -77,3 +77,23 @@ export const updateProduct = async (
     return Error(error);
   }
 };
+
+// delete product
+export const deleteProduct = async (productId: string) => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_API}/product/${productId}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: (await cookies()).get("accessToken")!.value,
+        },
+      }
+    );
+    
+    revalidateTag("PRODUCT");
+    return res.json();
+  } catch (err: any) {
+    return Error(err);
+  }
+};

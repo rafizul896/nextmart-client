@@ -18,7 +18,7 @@ const ManageProducts = ({ products }: { products: IProduct[] }) => {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
 
-  const handleView = (product: IProduct) => {
+  const handleView = async (product: IProduct) => {
     console.log("Viewing product:", product);
   };
 
@@ -32,12 +32,11 @@ const ManageProducts = ({ products }: { products: IProduct[] }) => {
     try {
       if (selectedId) {
         const res = await deleteProduct(selectedId);
-        console.log(res);
-        if (res.success) {
-          toast.success(res.message);
+        if (res?.success) {
+          toast.success(res?.message);
           setModalOpen(false);
         } else {
-          toast.error(res.message);
+          toast.error(res?.message);
         }
       }
     } catch (err: any) {

@@ -14,7 +14,7 @@ import DeleteConfirmationModal from "@/components/ui/core/NMModal/DeleteConfirma
 
 const ManageProducts = ({ products }: { products: IProduct[] }) => {
   const router = useRouter();
-  const [isModalOpen, setModalOpen] = useState(false);
+  const [isModalOpen, setModalOpen] = useState<boolean>(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
 
@@ -39,8 +39,10 @@ const ManageProducts = ({ products }: { products: IProduct[] }) => {
           toast.error(res?.message);
         }
       }
-    } catch (err: any) {
-      console.error(err?.message);
+    } catch (err) {
+      if (err instanceof Error) {
+        console.error(err?.message);
+      }
     }
   };
 
